@@ -1,4 +1,4 @@
-package com.luzhiqng.bamboo.api.biz.controller;
+package com.luzhiqing.bamboo.api.biz.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
