@@ -5,7 +5,11 @@ import com.luzhiqing.bamboo.api.auth.vo.request.LoginRequestVO;
 import com.luzhiqing.bamboo.api.auth.vo.request.PlatformLoginRequestVO;
 import com.luzhiqing.bamboo.api.auth.vo.request.RegisterRequestVO;
 import com.luzhiqing.bamboo.api.auth.vo.response.LoginResponseVO;
+import com.luzhiqing.bamboo.remote.client.AccountRemote;
+import com.luzhiqing.bamboo.remote.dto.RegisterDTO;
+import com.luzhiqing.common.util.BeanUtil;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/user")
 public class AccountController {
+
+    @Autowired
+    AccountRemote accountRemote;
     /**
      * 注册账号
      *
@@ -27,8 +34,9 @@ public class AccountController {
      */
     @ApiOperation("注册用户")
     @RequestMapping(value = "/v1/auth/account/register",method = RequestMethod.POST)
-    public int register(RegisterRequestVO registerRequestVO) {
-        return 0;
+    public void register(RegisterRequestVO registerRequestVO) {
+        RegisterDTO registerDTO = BeanUtil.map(registerRequestVO,RegisterDTO.class);
+        accountRemote.register(registerDTO);
     }
 
     /**
