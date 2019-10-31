@@ -1,4 +1,4 @@
-package com.luzhiqing.bamboo.api.ApiConfig;
+package com.luzhiqing.bamboo.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

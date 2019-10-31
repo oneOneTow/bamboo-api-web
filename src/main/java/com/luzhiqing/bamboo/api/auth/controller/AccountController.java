@@ -1,18 +1,14 @@
 package com.luzhiqing.bamboo.api.auth.controller;
 
 
-import com.luzhiqing.bamboo.api.auth.vo.request.LoginRequestVO;
-import com.luzhiqing.bamboo.api.auth.vo.request.PlatformLoginRequestVO;
-import com.luzhiqing.bamboo.api.auth.vo.request.RegisterRequestVO;
-import com.luzhiqing.bamboo.api.auth.vo.response.LoginResponseVO;
+import com.luzhiqing.bamboo.api.auth.vo.response.TokenResponseVO;
 import com.luzhiqing.bamboo.remote.client.AccountRemote;
-import com.luzhiqing.bamboo.remote.dto.RegisterDTO;
+import com.luzhiqing.bamboo.remote.dto.TokenDTO;
+import com.luzhiqing.common.token.User;
 import com.luzhiqing.common.util.BeanUtil;
-import io.swagger.annotations.ApiOperation;
+import com.luzhiqing.common.util.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Description:
@@ -21,45 +17,44 @@ import org.springframework.web.bind.annotation.RestController;
  * @CreateDate: 2019/10/1 21:08
  */
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/mp")
 public class AccountController {
 
     @Autowired
     AccountRemote accountRemote;
+
     /**
-     * 注册账号
+     * 登录
      *
-     * @param registerRequestVO
-     * @return 注册账号主键
+     * @param appId
+     * @param code
+     * @return
      */
-    @ApiOperation("注册用户")
-    @RequestMapping(value = "/v1/auth/account/register",method = RequestMethod.POST)
-    public void register(RegisterRequestVO registerRequestVO) {
-        RegisterDTO registerDTO = BeanUtil.map(registerRequestVO,RegisterDTO.class);
-        accountRemote.register(registerDTO);
+    @RequestMapping(value = "/auth/account/login/{appId}", method = RequestMethod.GET)
+    TokenResponseVO mpLogin(@PathVariable String appId, @RequestParam String code) {
+        TokenDTO tokenDTO = accountRemote.mpLogin(appId, code);
+        return BeanUtils.map(tokenDTO, TokenResponseVO.class);
     }
 
     /**
-     * 用户登录
+     * 获取user信息
      *
-     * @param loginRequestVO
-     * @return token
+     * @param appId
+     * @param sessionKey
+     * @param signature
+     * @param rawData
+     * @param encryptedData
+     * @param iv
+     * @return
      */
-    @ApiOperation("用户登录")
-    @RequestMapping(value = "/v1/auth/account/login",method = RequestMethod.POST)
-    public LoginResponseVO login(LoginRequestVO loginRequestVO) {
-        return null;
-    }
-
-    /**
-     * 第三方登录
-     *
-     * @param loginRequestVO
-     * @return token
-     */
-    @ApiOperation("用户登录")
-    @RequestMapping(value = "/v1/auth/account/platform/login",method = RequestMethod.POST)
-    public LoginResponseVO login(PlatformLoginRequestVO loginRequestVO) {
-        return null;
+    @RequestMapping(value = "/auth/account/user/{appId}", method = RequestMethod.GET)
+    public User fetchUser(@PathVariable String appId,
+                          @RequestParam String uid,
+                          @RequestParam String signature,
+                          @RequestParam String rawData,
+                          @RequestParam String encryptedData,
+                          @RequestParam String iv) {
+        User user = accountRemote.fetchUser(appId, uid, signature, rawData, encryptedData, iv);
+        return user;
     }
 }

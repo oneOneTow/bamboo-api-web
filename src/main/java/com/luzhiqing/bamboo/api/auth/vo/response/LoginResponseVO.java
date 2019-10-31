@@ -30,5 +30,5 @@ public class LoginResponseVO {
     private GenderType gender;
 
     @ApiModelProperty("token")
-    private TokenResponseVO tokenResponseVO;
+    private TokenResponseVO token;
 }

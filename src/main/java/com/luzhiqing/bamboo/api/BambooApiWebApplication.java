@@ -11,7 +11,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableDiscoveryClient
 @EnableTransactionManagement
 @EnableFeignClients(basePackages = {"com.luzhiqing.bamboo.remote","com.codingapi.tx.netty.service"})
-@SpringBootApplication(scanBasePackages = "com.luzhiqing.bamboo")
+@SpringBootApplication(scanBasePackages = "com.luzhiqing")
 @EnableSwagger2
 @EnableApolloConfig
 public class BambooApiWebApplication {

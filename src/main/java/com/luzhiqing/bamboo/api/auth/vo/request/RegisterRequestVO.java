@@ -30,4 +30,7 @@ public class RegisterRequestVO {
     @ApiModelProperty("验证码")
     private String code;
 
+    @ApiModelProperty("密码")
+    private String password;
+
 }
